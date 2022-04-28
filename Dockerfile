@@ -1,5 +1,4 @@
 FROM ubuntu:18.04
-MAINTAINER Amritpal Singh <amrit3701@gmail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -10,8 +9,8 @@ ENV PYTHON_BIN_VERSION python3.8
 # if this is called "PIP_VERSION", pip explodes with "ValueError: invalid truth value '<VERSION>'"
 ENV PYTHON_PIP_VERSION 18.0
 
-ENV FREECAD_VERSION master
-ENV FREECAD_REPO git://github.com/FreeCAD/FreeCAD.git
+ENV FREECAD_VERSION 0.19.4
+ENV FREECAD_REPO https://github.com/FreeCAD/FreeCAD.git
 
 # python3.8-distutils https://github.com/deadsnakes/issues/issues/82
 RUN \
@@ -94,7 +93,7 @@ ENV PYTHONPATH "/usr/local/lib:$PYTHONPATH"
 RUN \
   # get FreeCAD Git
     cd \
-    && git clone --branch "$FREECAD_VERSION" "$FREECAD_REPO" \
+    && git clone --depth=1 --branch "$FREECAD_VERSION" "$FREECAD_REPO" \
     && mkdir freecad-build \
     && cd freecad-build \
   # Build
