@@ -1,0 +1,20 @@
+name: Docker Image Publish
+
+on:
+  push:
+    release:
+      types: [ published ]
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Build and publish a Docker image for ${{ github.repository }}
+      uses: macbre/push-to-ghcr@v8
+      with:
+        image_name: freecad-cli
+        github_token: ${{ secrets.GITHUB_TOKEN }}
