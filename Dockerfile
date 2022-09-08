@@ -2,7 +2,7 @@ FROM ubuntu:20.04
 
 ENV DEBIAN_FRONTEND noninteractive
 
-ENV FREECAD_VERSION 0.19.4
+ENV FREECAD_VERSION 0.20.1
 ENV FREECAD_REPO https://github.com/FreeCAD/FreeCAD.git
 
 # python3.8-distutils https://github.com/deadsnakes/issues/issues/82
@@ -82,6 +82,7 @@ RUN \
                 python3-git \
                 xvfb \
                 wget \
+                vim \
                 " \
     && apt update \
     && apt install -y --no-install-recommends software-properties-common \
@@ -108,6 +109,11 @@ RUN \
     && cd \
     # Clean
     && rm FreeCAD/ freecad-build/ -fR
+
+# Fixed import MeshPart module due to missing libnglib.so
+# https://bugs.launchpad.net/ubuntu/+source/freecad/+bug/1866914
+RUN echo "/usr/lib/x86_64-linux-gnu/netgen" >> /etc/ld.so.conf.d/x86_64-linux-gnu.conf
+RUN ldconfig
 
 # Clean
 RUN apt-get clean \
